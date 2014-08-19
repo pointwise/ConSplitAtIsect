@@ -1,9 +1,9 @@
 #
 # Copyright 2012 (c) Pointwise, Inc.
 # All rights reserved.
-# 
+#
 # This sample script is not supported by Pointwise, Inc.
-# It is provided freely for demonstration purposes only.  
+# It is provided freely for demonstration purposes only.
 # SEE THE WARRANTY DISCLAIMER AT THE BOTTOM OF THIS FILE.
 #
 
@@ -16,6 +16,18 @@ set isectTol 1e-5
 
 set conName(1) ""
 set conName(2) ""
+
+#
+# If there are exactly two connectors selected, initialize the Tk widget with
+# the selection. Otherwise, leave the Tk widget empty.
+#
+set mask [pw::Display createSelectionMask -requireConnector {Dimensioned}]
+pw::Display getSelectedEntities -selectionmask $mask selection
+
+if {[llength $selection(Connectors)] == 2} {
+  set conName(1) [[lindex $selection(Connectors) 0] getName]
+  set conName(2) [[lindex $selection(Connectors) 1] getName]
+}
 
 proc getConPtData { con arc } {
   return [list $arc [$con getXYZ -arc $arc]]
@@ -531,7 +543,7 @@ proc makeWindow { } {
 
   pack [frame .hr2 -bd 1 -height 2 -relief sunken] -fill x -pady 2
   pack [frame .buttons] -fill both -side top
-     
+
   pack [button .buttons.apply -text "Apply" -command { doIt } -width 5] \
     -padx 6 -side right
   pack [button .buttons.cancel -text "Close" -command { exit } -width 5] \
@@ -600,12 +612,12 @@ tkwait window .
 # TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, POINTWISE DISCLAIMS
 # ALL WARRANTIES, EITHER EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED
 # TO, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
-# PURPOSE, WITH REGARD TO THIS SCRIPT.  TO THE MAXIMUM EXTENT PERMITTED 
-# BY APPLICABLE LAW, IN NO EVENT SHALL POINTWISE BE LIABLE TO ANY PARTY 
-# FOR ANY SPECIAL, INCIDENTAL, INDIRECT, OR CONSEQUENTIAL DAMAGES 
-# WHATSOEVER (INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOSS OF 
-# BUSINESS INFORMATION, OR ANY OTHER PECUNIARY LOSS) ARISING OUT OF THE 
-# USE OF OR INABILITY TO USE THIS SCRIPT EVEN IF POINTWISE HAS BEEN 
-# ADVISED OF THE POSSIBILITY OF SUCH DAMAGES AND REGARDLESS OF THE 
+# PURPOSE, WITH REGARD TO THIS SCRIPT.  TO THE MAXIMUM EXTENT PERMITTED
+# BY APPLICABLE LAW, IN NO EVENT SHALL POINTWISE BE LIABLE TO ANY PARTY
+# FOR ANY SPECIAL, INCIDENTAL, INDIRECT, OR CONSEQUENTIAL DAMAGES
+# WHATSOEVER (INCLUDING, WITHOUT LIMITATION, DAMAGES FOR LOSS OF
+# BUSINESS INFORMATION, OR ANY OTHER PECUNIARY LOSS) ARISING OUT OF THE
+# USE OF OR INABILITY TO USE THIS SCRIPT EVEN IF POINTWISE HAS BEEN
+# ADVISED OF THE POSSIBILITY OF SUCH DAMAGES AND REGARDLESS OF THE
 # FAULT OR NEGLIGENCE OF POINTWISE.
 #
